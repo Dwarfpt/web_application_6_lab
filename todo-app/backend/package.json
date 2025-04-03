@@ -1,0 +1,25 @@
+{
+    "name": "todo-backend",
+    "version": "1.0.0",
+    "description": "Backend for Todo List application",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "start-secure": "cross-env NODE_EXTRA_CA_CERTS=./certs/gmail-ca.pem node server.js",
+      "docker": "cross-env CERT_PATH=/app/certs/gmail-ca.pem node server.js",
+      "check-cert": "node ../check-cert.js"
+    },
+    "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.18.2",
+      "morgan": "^1.10.0",
+      "pg": "^8.11.3",
+      "swagger-ui-express": "^5.0.0",
+      "swagger-jsdoc": "^6.2.8",
+      "nodemailer": "^6.9.9",
+      "imap": "^0.8.19",
+      "mailparser": "^3.6.5",
+      "cross-env": "^7.0.3",
+      "socket.io": "^4.8.1"
+    }
+  }

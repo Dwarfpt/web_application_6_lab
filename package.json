@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "imap": "^0.8.19",
+    "mailparser": "^3.7.2",
+    "node-pop3": "^0.9.0",
+    "nodemailer": "^6.10.0",
+    "pop3-server": "^0.0.2",
+    "poplib": "^0.1.7",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

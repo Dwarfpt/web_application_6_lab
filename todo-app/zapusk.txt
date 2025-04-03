@@ -1,0 +1,148 @@
+# Создание сети
+docker network create todo-network
+
+# Сборка образов
+docker build -t todo-db ./todo-app/database
+docker build -t todo-backend ./todo-app/backend
+docker build -t todo-frontend ./todo-app/frontend
+
+# Запуск контейнеров
+docker run -d --name database --network todo-network -p 5432:5432 todo-db
+docker run -d --name backend --network todo-network -p 5000:5000 todo-backend
+docker run -d --name frontend --network todo-network -p 80:80 todo-frontend
+
+# Проверка статуса контейнеров
+docker ps
+
+# Просмотр логов
+docker logs database
+docker logs backend
+docker logs frontend
+
+# Тестирование API
+# Тест 1: Получение всех задач
+Invoke-RestMethod -Uri "http://localhost:5000/api/tasks" -Method GET
+
+# Тест 2: Создание новой задачи
+Write-Host "Тест 2: Создание новой задачи"
+$body = @{
+title = "Test Task"
+description = "Test Description"
+status = "pending"
+} | ConvertTo-Json
+$newTask = Invoke-RestMethod -Uri "http://localhost:5000/api/tasks" -Method POST -ContentType "application/json" -Body $body
+$taskId = $newTask.id
+Write-Host "Создана задача с ID: $taskId"
+
+# Тест 3: Получение задачи по ID (замените {id} на реальный ID)
+Write-Host "Тест 3: Получение задачи по ID $taskId"
+Invoke-RestMethod -Uri "http://localhost:5000/api/tasks/$taskId" -Method GET
+
+# Тест 4: Обновление задачи (замените {id} на реальный ID)
+Write-Host "Тест 4: Обновление задачи с ID $taskId"
+$updateBody = @{
+title = "Updated Task"
+description = "Updated Description"
+status = "completed"
+} | ConvertTo-Json
+Invoke-RestMethod -Uri "http://localhost:5000/api/tasks/$taskId" -Method PUT -ContentType "application/json" -Body $updateBody
+
+# Тест 5: Удаление задачи (замените {id} на реальный ID)
+Write-Host "Тест 5: Удаление задачи с ID $taskId"
+Invoke-RestMethod -Uri "http://localhost:5000/api/tasks/$taskId" -Method DELETE
+
+# Остановка контейнеров
+docker stop frontend
+docker stop backend
+docker stop database
+
+# Удаление контейнеров
+docker rm frontend
+docker rm backend
+docker rm database
+
+# Удаление образов
+docker rmi todo-frontend
+docker rmi todo-backend
+docker rmi todo-db
+
+# Удаление сети
+docker network rm todo-network
+
+# Проверка очистки
+docker ps -a  # Проверка наличия контейнеров
+docker images # Проверка наличия образов
+docker network ls # Проверка наличия сетей
+
+# Быстрая остановка и удаление всех контейнеров (альтернативный способ)
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+
+# Полная очистка системы (удаление всех неиспользуемых объектов)
+docker system prune -a --volumes
+
+# Дополнительные команды для отладки
+# Подключение к контейнеру базы данных
+docker exec -it database psql -U postgres todo_db
+
+# Проверка работоспособности приложения
+echo "Проверка базы данных..."
+docker exec database pg_isready -U postgres
+
+echo "Проверка backend API..."
+curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/tasks
+
+echo "Проверка frontend..."
+curl -s -o /dev/null -w "%{http_code}" http://localhost:80
+
+# Автоматические тесты с использованием shell script
+echo "Запуск автоматических тестов..."
+
+# Тест создания задачи
+TEST_TASK_ID=$(curl -s -X POST http://localhost:5000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Test Task","description":"Test Description","status":"pending"}' \
+  | grep -o '"id":[0-9]*' | cut -d':' -f2)
+
+# Проверка создания
+if [ ! -z "$TEST_TASK_ID" ]; then
+  echo "✓ Создание задачи успешно"
+else
+  echo "✗ Ошибка создания задачи"
+fi
+
+# Тест получения задачи
+TASK_GET=$(curl -s http://localhost:5000/api/tasks/$TEST_TASK_ID)
+if [[ $TASK_GET == *"Test Task"* ]]; then
+  echo "✓ Получение задачи успешно"
+else
+  echo "✗ Ошибка получения задачи"
+fi
+
+# Тест обновления задачи
+curl -s -X PUT http://localhost:5000/api/tasks/$TEST_TASK_ID \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Updated Task","description":"Updated Description","status":"completed"}'
+
+TASK_UPDATED=$(curl -s http://localhost:5000/api/tasks/$TEST_TASK_ID)
+if [[ $TASK_UPDATED == *"Updated Task"* ]]; then
+  echo "✓ Обновление задачи успешно"
+else
+  echo "✗ Ошибка обновления задачи"
+fi
+
+# Тест удаления задачи
+DELETE_RESULT=$(curl -s -X DELETE http://localhost:5000/api/tasks/$TEST_TASK_ID)
+if [[ $DELETE_RESULT == *"successfully"* ]]; then
+  echo "✓ Удаление задачи успешно"
+else
+  echo "✗ Ошибка удаления задачи"
+fi
+
+echo "Тестирование завершено"
+
+
+Сети докера
+   docker network ls
+
+docker network inspect <network_name>

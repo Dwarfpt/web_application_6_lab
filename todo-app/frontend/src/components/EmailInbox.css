@@ -1,0 +1,130 @@
+.email-inbox-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .email-inbox-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .email-inbox-header h2 {
+    margin: 0;
+    color: #333;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .email-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .tab-button {
+    padding: 8px 16px;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .tab-button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .refresh-button {
+    margin-left: auto;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  
+  .email-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  
+  .email-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .no-emails {
+    text-align: center;
+    padding: 30px 0;
+    color: #666;
+  }
+  
+  .email-item {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .email-item:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .email-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  
+  .email-from {
+    font-weight: 600;
+    color: #555;
+  }
+  
+  .email-date {
+    font-size: 0.8em;
+    color: #888;
+  }
+  
+  .email-subject {
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+  
+  .email-preview {
+    color: #777;
+    font-size: 0.9em;
+    line-height: 1.4;
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+  }
