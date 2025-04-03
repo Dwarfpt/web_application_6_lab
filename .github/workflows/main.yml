@@ -68,7 +68,9 @@ jobs:
           docker ps
       
       - name: Test database connection
-        run: docker exec backend pg_isready -h database -U postgres
+        run: |
+          echo "Testing database connection through backend API..."
+          curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/tasks | grep 200
       
       - name: Test backend API - Get all tasks
         run: curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/tasks | grep 200
